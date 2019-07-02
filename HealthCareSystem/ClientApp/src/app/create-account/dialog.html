@@ -1,0 +1,28 @@
+
+<div mat-dialog-content>
+  <h5>Kreiraj nalog?</h5>
+</div>
+<table *ngIf="data.doctor.titleId">
+  <tr>
+    <td>Ljekar: </td>
+    <td> {{data.doctor.name}}</td>
+  </tr>
+  <tr>
+    <td>Zvanje: </td>
+    <td> {{title}}</td>
+  </tr>
+  <tr *ngIf="data.doctor.ambulance">
+    <td>Ambulanta:  </td>
+    <td > {{data.doctor.ambulance}}</td>
+  </tr>
+</table>
+<table *ngIf="!data.doctor.titleId">
+  <tr>
+    <td>Zaposleni: </td>
+    <td>{{data.tehnician.name}}</td>
+  </tr>
+</table>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" color="primary">Otkaži</button>
+  <button mat-button  cdkFocusInitial color="primary" [mat-dialog-close]="true">Kreiraj</button>
+</div>

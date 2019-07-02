@@ -1,0 +1,39 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<form #f="ngForm">
+  <!--<h1> Termin pregleda</h1>
+  <br />-->
+
+  <mat-form-field class="example-full-width">
+    <input matInput
+           [matDatepickerFilter]="dateClass"
+           [min]="minDate"
+           [matDatepicker]="picker"
+           placeholder="Izaberite datum"
+           required
+           [(ngModel)]="date"
+           name="Date"
+           (dateChange)="onDateChange()">
+    <mat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker></mat-datepicker>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>
+      Vrijeme
+    </mat-label>
+    <mat-select [(ngModel)]="appointment.id" required name="Time">
+      <mat-option selected disabled *ngIf="!date" style="color:red">Izaberite najprije datum</mat-option>
+      <mat-option selected disabled *ngIf="date">Izaberite ovdje</mat-option>
+      <ng-container *ngIf="query.date">
+        <mat-option *ngFor="let appointment of appointments" value="{{appointment.id}}">
+          {{appointment.time.appointmentTime}}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <button mat-button color="primary" matStepperPrevious *ngIf="role!='Specialist'">Nazad</button>
+  <button mat-stroked-button color="primary" [disabled]="!f.valid" matStepperNext (click)="openDialog()">Dalje</button>
+</form>

@@ -1,0 +1,29 @@
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+<form *ngIf="hideSpinner">
+  <h4>Lista pregleda</h4>
+  <br />
+  <button  mat-stroked-button color="primary">Novi pregled</button>
+
+  <div align="right">
+    {{query.date | translateDate}}
+  </div>
+  <div *ngIf="appointments.length == 0">  <mat-divider></mat-divider> Datog datuma nema zakazanih pregleda. </div>
+  <table class='table' style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " *ngIf="appointments.length > 0">
+    <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+      <tr>
+        <td>Termin</td>
+        <td>Br. zdravstvene knjižice</td>
+        <td>Pacijent</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tr *ngFor="let app of appointments">
+      <ng-container *ngIf="pipe.transform(app.date, 'shortDate') == query.date">
+        <td>{{app.time.appointmentTime}}</td>
+        <td>{{app.patient.cardNumber}}</td>
+        <td>{{app.patient.name}}</td>
+        <td> <button mat-stroked-button color="primary" [routerLink]='["/appointment", app.patient.id, {app: app.id}]'>Pregled</button></td>
+      </ng-container>
+    </tr>
+  </table>
+</form>

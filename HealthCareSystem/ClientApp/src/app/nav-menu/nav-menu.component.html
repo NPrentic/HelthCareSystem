@@ -1,0 +1,56 @@
+<header>
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
+    <div class="container">
+      <a class="navbar-brand">HealthCareSystem</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
+        [attr.aria-expanded]="isExpanded" (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
+        <ul class="navbar-nav flex-grow">
+          <!--<li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+    <a class="nav-link text-dark" [routerLink]='["/home"]' *ngIf="isAuthenticated">Naslovna</a>
+  </li>-->
+          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-dark" [routerLink]='["/"]' *ngIf="!isAuthenticated">Prijava</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-dark" [routerLink]='["/accounts/list"]'
+               *ngIf="isAuthenticated && employeeRole == 'Administrator'">Lista naloga</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/appointments"]'
+               *ngIf="isAuthenticated && (employeeRole == 'nonSpecialist' || employeeRole == 'Specialist' )">Lista pregleda</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/schedule"]' *ngIf="isAuthenticated">Raspored</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/patient/appointment"]'
+               *ngIf="!isAuthenticated || employeeRole == 'Tehnician'">Zakazivanje pregleda</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/choose/docotr"]'
+               *ngIf="employeeRole == 'Tehnician'">Izabrani ljekar</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/informations"]'
+               *ngIf="!isAuthenticated">Informacije</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/password/change"]' *ngIf="isAuthenticated">Promjena lozinke</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/logout"]' (click)="openLogoutDialog()" *ngIf="isAuthenticated">Odjava</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<div *ngIf="facilityName" class="container">
+  {{facilityName}} <div class="right_header">{{employeeName}}
+                     <ng-container *ngIf="employeeTitle && employeeTitle != 'null'">, {{ employeeTitle.toLowerCase()}}</ng-container> </div>
+  <mat-divider></mat-divider>
+  <br />
+</div>

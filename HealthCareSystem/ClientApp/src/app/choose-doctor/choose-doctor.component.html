@@ -1,0 +1,101 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Dodjelia / Promjena izabranog ljakara pacijentu</mat-card-title>
+  </mat-card-header>
+  <br /><br />
+  
+  <mat-vertical-stepper  #stepper>
+    <mat-step >
+      <ng-template matStepLabel>Identifikacija pacijenta</ng-template>
+      <form #f="ngForm">
+
+        <div class="form-group">
+
+          <mat-form-field class="example-full-width">
+            <input required
+                   matInput
+                   placeholder="Br. zdravstvene knjižice"
+                   id="Patient" name="Patient"
+                   class="form-control"
+                   [(ngModel)]="query.cardNumber">
+          </mat-form-field>
+          <br />
+          <button type="button" (click)="populatePatient()" [disabled]="!f.valid" mat-stroked-button color="primary">Pretraži</button>
+        </div>
+        <mat-error *ngIf="invalidCardNumber">
+          Unijeli ste neregularan broj zdravstvene knjižice. Pokušajte ponovo.
+        </mat-error>
+        <div *ngIf="(patient.id)">
+          <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+            <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+              <tr>
+                <td>Br. zdravstvene knjižice</td>
+                <td>Ime i prezime</td>
+                <td>Ime oca</td>
+                <td>Pol</td>
+                <td>Datum rođenja</td>
+                <td>Krvna grupa</td>
+                <td>Izabrani ljekar</td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{patient.cardNumber}}</td>
+                <td>{{patient.name}}</td>
+                <td>{{patient.fatherName}}</td>
+                <td *ngIf="patient.gender == 'male'"> <i class="fa fa-mars" style="color:lightblue"></i></td>
+                <td *ngIf="patient.gender == 'female'"><i class="fa fa-venus" style="color:palevioletred"></i></td>
+                <td>{{patient.dateOfBirth | date: 'dd-MM-yyyy' }}</td>
+                <td>{{patient.bloodType}}</td>
+                <td>{{doctor.name | name}}, {{doctor.title.name.toLowerCase()}}</td>
+                <td>
+                  <button *ngIf="!patient.doctorId" type="button" mat-stroked-button color="primary" (click)="onConfirm()" matStepperNext>
+                    Dodijeli izabranog ljekara
+                  </button>
+                  <button *ngIf="patient.doctorId" type="button" mat-stroked-button color="primary" (click)="onConfirm()" matStepperNext>
+                    Promijeni izabranog ljekara
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Odabir ljakara</ng-template>
+      <div *ngIf="!doctors" style="color:red">
+        Najprije morate završiti korak identifikacije.
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label id="Doctor">
+            Ljekar
+          </mat-label>
+          <mat-select [(ngModel)]="newDoctorId" required name="Doctor" id="Doctor" [disabled]="!doctors">
+            <mat-option selected disabled>Izaberite ovdje</mat-option>
+            <mat-option *ngFor="let doc of doctors" value="{{doc.id}}">
+              {{doc.name}}, {{doc.title.name.toLowerCase()}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-button matStepperPrevious>Nazad</button>
+        <button mat-button matStepperNext [disabled]="!newDoctorId" (click)="openDialog()">Izaberi</button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Potvrda</ng-template>
+   
+    </mat-step>
+
+  </mat-vertical-stepper>
+</mat-card>

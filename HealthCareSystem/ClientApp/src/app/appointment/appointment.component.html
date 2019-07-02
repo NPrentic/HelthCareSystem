@@ -1,0 +1,45 @@
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+
+  <mat-card class="box-shadow">
+    <mat-card-header>
+      <mat-card-title>Pacijent: {{patient.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form *ngIf="hideSpinner" #formVariable="ngForm">
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Simptomi:</label>
+          <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Dijagnoza:</label>
+          <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Terapija:</label>
+          <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="5"></textarea>
+        </div>
+        <br />
+        <table class="table">
+          <tr>
+            <td>
+              <button class="custom-button" mat-stroked-button color="primary" (click)="openCertificateDialog()">Izdavanje uvjerenja</button>
+            </td>
+            <td *ngIf="role === 'nonSpecialist'">
+              <button class="custom-button" mat-stroked-button color="primary" (click)="openToSpecialistDialog()">Upućivanje kod specijaliste</button>
+            </td>
+            <td *ngIf="role === 'Specialist'">
+              <button class="custom-button" mat-stroked-button color="primary" (click)="openArangeControlDialog()">Zakazivanje kontrole</button>
+            </td>
+
+            <td>
+              <button class="custom-button" mat-stroked-button color="primary" [routerLink]='["/appointments", {app: appointmentId, pat: patient.id}]'>Kraj pregleda</button>
+            </td>
+          </tr>
+        </table>
+        <mat-divider></mat-divider><br />
+      </form>
+    </mat-card-content>
+

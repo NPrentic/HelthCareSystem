@@ -1,0 +1,79 @@
+<mat-card class="box-shadow">
+  <h4>
+    Novi nalog
+  </h4>
+
+  <mat-tab-group mat-align-tabs="end" (selectedTabChange)="onTabChange()">
+    <mat-tab label="Ljekar">
+      <br />
+      <form #f="ngForm">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Ime i prezime" required [(ngModel)]="doctor.name" name="Name">
+        </mat-form-field>
+        <br />
+
+        <mat-form-field>
+          <br />
+          <mat-label>
+            Zvanje
+          </mat-label>
+          <mat-select [(ngModel)]="doctor.titleId" required name="Title">
+            <mat-option selected disabled>Izaberite ovdje</mat-option>
+            <mat-option *ngFor="let title of titles" value="{{title.id}}">
+              {{title.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-label>
+          Ustanova: {{facility.name}}
+        </mat-label>
+        <br />
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Ambulanta" name="ambulance" pattern="^[0-9]*$" [(ngModel)]="doctor.ambulance">
+        </mat-form-field>
+        <br />
+        <br />
+        <mat-label>
+          Kirisnički Id: {{userId}}
+        </mat-label>
+        <br /><br />
+        <mat-label>
+          Lozinka: <ng-container *ngIf="doctor.name">{{doctor.name | password}}</ng-container>
+        </mat-label>
+        <br /><br />
+        <button mat-stroked-button color="primary" [disabled]="!f.valid" (click)="openDialog()">Kreiraj</button>
+
+      </form>
+    </mat-tab>
+    <mat-tab label="Medicinska sestra ili tehničar">
+      <form #f2="ngForm">
+        <br />
+        <mat-radio-group [(ngModel)]="tehnician.gender" required name="gender">
+          <mat-radio-button value="female">Medicinska sestra</mat-radio-button>
+          <mat-radio-button value="male" style="padding-left: 40px">Medicinski tehničar</mat-radio-button>
+        </mat-radio-group>
+        <br />
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Ime i prezime" required [(ngModel)]="tehnician.name" name="Name">
+        </mat-form-field>
+        <br />
+        <mat-label>
+          Ustanova: {{facility.name}}
+        </mat-label>
+        <br /><br />
+        <mat-label>
+          Kirisnički Id: {{userId}}
+        </mat-label>
+        <br /><br />
+        <mat-label>
+          Lozinka: <ng-container *ngIf="tehnician.name">{{tehnician.name | password}}</ng-container>
+        </mat-label>
+        <br /><br />
+        <button mat-stroked-button color="primary" [disabled]="!f2.valid" (click)="openDialog()">Kreiraj</button>
+
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+
+</mat-card>

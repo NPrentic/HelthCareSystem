@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Da li ste sigurni da želite da se odjavite?</h1>
+<br /><br />
+ 
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()" color="primary">Ne</button>
+      <button mat-button cdkFocusInitial color="primary" [mat-dialog-close]="true">Da</button>
+    </div>
+  

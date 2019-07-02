@@ -1,0 +1,32 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Zakazivanje pregleda kod izabranog ljekara</mat-card-title>
+    </mat-card-header>
+    <br /><br />
+    <mat-vertical-stepper [linear]="false" #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Identifijakcija</ng-template>
+          <scheduling-appointment (patient-event)="getPatient($event)" (doctor-event)="getDoctor($event)"></scheduling-appointment>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Termin pregleda</ng-template>
+          <div *ngIf="doctorId && patientId"><date-time [patient-id]="patientId" [doctor-id]="doctorId"></date-time></div>
+          <div *ngIf="!doctorId || !patientId" style="color:red">
+            Najprije morate završiti prvi korak zakzaivanja.
+          </div>
+        </form>
+      </mat-step>
+      <mat-step >
+        <ng-template matStepLabel>Potvrda</ng-template>
+        <div>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-card>
+
+

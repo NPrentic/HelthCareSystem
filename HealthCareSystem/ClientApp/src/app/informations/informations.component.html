@@ -1,0 +1,23 @@
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+<form *ngIf="hideSpinner">
+  <h4>
+    Spisak zdravstvenih ustanova
+  </h4>
+  <div *ngFor="let fac of facilities">
+    <mat-divider></mat-divider><br />
+    <h5 style="color: midnightblue">{{fac.name}}</h5>
+    <br />
+    <div>
+      <h6>Adresa:</h6>
+      <p>{{fac.address}}</p>
+      <h6>Email:</h6>
+      <p>
+        {{fac.contactEmail}}<br />
+
+        <h6>Telefon:</h6>
+      <p>{{fac.contactPhone | phone}} </p>
+      <br />
+    </div>
+    <br />
+  </div>
+</form>

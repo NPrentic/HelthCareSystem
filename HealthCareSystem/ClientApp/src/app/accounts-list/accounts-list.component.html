@@ -1,0 +1,68 @@
+
+  <mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+  <form *ngIf="hideSpinner">
+    <h4> Korisnički nalozi zaposlenih</h4>
+    <br />
+    <button [routerLink]="['/create/account']" mat-stroked-button color="primary">Kreiraj novi nalog</button>
+    <br />
+
+    <mat-tab-group mat-align-tabs="end" (selectedTabChange)="onTabChange()">
+      <mat-tab label="Ljekari">
+        <table class='table' style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+          <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+            <tr>
+              <td>Korisnički Id</td>
+              <td>Zvanje</td>
+              <td>Ljekar</td>
+              <td>Ambulanta</td>
+              <!--<td></td>-->
+              <td></td>
+            </tr>
+          </thead>
+          <tr><td colspan="5" *ngIf="getDoctorResult.doctors==undefind || getDoctorResult.doctors.length==0"> Nema ljekara za prikaz. </td></tr>
+          <tr *ngFor="let doc of getDoctorResult.doctors" [style.backgroundColor]="highlatedEmployee==doc.userId? 'lightblue' : 'white'">
+            <td>{{doc.userId}}</td>
+            <td>{{doc.title.name}}</td>
+            <td>{{doc.name}}</td>
+            <td *ngIf="doc.ambulance">{{doc.ambulance}}</td>
+            <td *ngIf="!doc.ambulance">-</td>
+            <!--<td> <button mat-stroked-button color="primary">Preuredi nalog</button></td>-->
+            <td> <button mat-stroked-button color="primary" (click)="onDeleteDoctor(doc.id)">Izbriši nalog</button></td>
+          </tr>
+        </table>
+        <mat-paginator [length]="getDoctorResult.itemsNumber"
+                       [pageSize]="query.pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       (page)="onDoctorPageChange($event)">
+        </mat-paginator>
+      </mat-tab>
+      <mat-tab label="Medicinske sestre i tehničari">
+        <table class='table' style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+          <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+            <tr>
+              <td>Korisnički Id</td>
+              <td>Zvanje</td>
+              <td>Zaposleni</td>
+              <!--<td></td>-->
+              <td></td>
+            </tr>
+          </thead>
+          <tr><td colspan="5" *ngIf="getDoctorResult.doctors==undefind || getDoctorResult.doctors.length==0"> Nema ljekara za prikaz. </td></tr>
+          <tr *ngFor="let teh of tehnicians" [style.backgroundColor]="highlatedEmployee==teh.userId? 'lightblue' : 'white'">
+            <td>{{teh.userId}}</td>
+            <td *ngIf="teh.gender=='male'">Medicinski tehničar</td>
+            <td *ngIf="teh.gender!='male'">Medicinska sestra</td>
+            <td>{{teh.name}}</td>
+            <!--<td> <button mat-stroked-button color="primary">Preuredi nalog</button></td>-->
+            <td> <button mat-stroked-button color="primary" (click)="onDeleteTehnician(teh.id)">Izbriši nalog</button></td>
+          </tr>
+        </table>
+        <mat-paginator [length]="numberOfTehnicians"
+                       [pageSize]="query.pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       (page)="onTehPageChange($event)">
+        </mat-paginator>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+

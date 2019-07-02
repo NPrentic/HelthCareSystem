@@ -1,0 +1,24 @@
+
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+<form *ngIf="hideSpinner">
+  <div>
+    <h6>Pacijent:</h6>
+    <p>{{patient.name}}</p><br />
+    <h6>Ljekar:</h6>
+    <p>{{appointment.doctor.name}}, ambulanta br. {{appointment.doctor.ambulance}}</p><br />
+
+    <h6>Termin:</h6>
+    <p>{{appointment.date | translateDate}} </p>
+    <p>u {{appointment.time.appointmentTime}}h</p><br />
+  </div>
+
+  <div mat-dialog-content>
+    <h5>Zakaži pregled?</h5>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" color="primary">Otkaži</button>
+    <button mat-button cdkFocusInitial color="primary" [mat-dialog-close]="true">Potvrdi</button>
+  </div>
+</form>

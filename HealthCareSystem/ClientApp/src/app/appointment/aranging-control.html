@@ -1,0 +1,21 @@
+<!<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<h4>Zakazivanje kontrole</h4>
+
+<h5>Pacient: {{data.patientName}}</h5>
+
+
+
+<mat-horizontal-stepper>
+  <mat-step>
+      <ng-template matStepLabel>Termin kontrole</ng-template>
+      <date-time [patient-id]="data.patientId" [doctor-id]="data.doctorId"></date-time>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Završeno</ng-template>
+  </mat-step>
+</mat-horizontal-stepper>
+<br />
+<button style="float: right" mat-button color="primary" [mat-dialog-close]="true">Nazad na pregled</button>
+<br />

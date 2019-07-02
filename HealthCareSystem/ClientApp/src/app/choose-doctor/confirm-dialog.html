@@ -1,0 +1,9 @@
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+<form *ngIf="hideSpinner">
+ Da li ste sigurni da žeite da datom pacijentu bude {{doctor.name}}, {{doctor.title.name.toLowerCase()}}, dodiljen/a kao izabrani ljekar?
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" color="primary">Ne</button>
+    <button mat-button cdkFocusInitial color="primary" [mat-dialog-close]="true">Da</button>
+  </div>
+</form>

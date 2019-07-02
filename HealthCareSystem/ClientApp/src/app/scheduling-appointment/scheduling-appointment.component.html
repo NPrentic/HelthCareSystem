@@ -1,0 +1,92 @@
+<form #f="ngForm">
+
+  <div class="form-group">
+    <mat-form-field class="example-full-width" *ngIf="!isAuthenticated">
+      <input required
+             matInput
+             placeholder="Ime i prezime"
+             id="Patient" name="Patient"
+             class="form-control"
+             (keyup)="patient.id = 0"
+             [(ngModel)]="patientName">
+    </mat-form-field><br />
+
+    <mat-form-field class="example-full-width">
+      <input required
+             matInput
+             placeholder="Br. zdravstvene knjižice"
+             id="Patient" name="Patient"
+             class="form-control"
+             [(ngModel)]="query.cardNumber">
+    </mat-form-field><br />
+    <button type="button" (click)="populatePatient()" [disabled]="!f.valid || (!isAuthenticated && patientName == null)" mat-stroked-button color="primary">Pretraži</button>
+  </div>
+  <mat-error *ngIf="invalidCardNumber">
+    Unijeli ste neregularan broj zdravstvene knjižice. Pokušajte ponovo.
+  </mat-error>
+  <mat-error *ngIf="patient.id && !isAuthenticated && patient.name.toLowerCase() != patientName.toLowerCase()">
+    Informacije koje ste unijeli se ne podudaraju. Pokušajte ponovo.
+  </mat-error>
+
+  <div *ngIf="(patient.id && isAuthenticated) || (patient.id && !isAuthenticated && patient.name.toLowerCase() == patientName.toLowerCase())">
+    <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+      <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+        <tr>
+          <td>Br. zdravstvene knjižice</td>
+          <td>Ime i prezime</td>
+          <td>Ime oca</td>
+          <td>Pol</td>
+          <td>Datum rođenja</td>
+          <td>Krvna grupa</td>
+          <td>Izabrani ljekar</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{patient.cardNumber}}</td>
+          <td>{{patient.name}}</td>
+          <td>{{patient.fatherName}}</td>
+          <td *ngIf="patient.gender == 'male'"> <i class="fa fa-mars" style="color:lightblue"></i></td>
+          <td *ngIf="patient.gender == 'female'"><i class="fa fa-venus" style="color:palevioletred"></i></td>
+          <td>{{patient.dateOfBirth | date: 'dd-MM-yyyy' }}</td>
+          <td>{{patient.bloodType}}</td>
+          <td>{{doctor.name | name}}, {{doctor.title.name.toLowerCase()}}</td>
+          <td>
+            <button type="button"
+                    mat-stroked-button color="primary"
+                    [disabled]="patient.hasAppointment"
+                    (click)="emitProperties()"
+                    matStepperNext>
+              Zakaži pregled
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <div *ngIf="patient.hasAppointment && isAuthenticated">
+      <h6>{{patient.name}} ima već zakazan pregled kod izabranog ljekara:</h6>
+      <br />
+    </div>
+    <div *ngIf="patient.hasAppointment && !isAuthenticated">
+      <h6>Već imate zakazan pregled kod izabranog ljekara:</h6>
+      <br />
+    </div>
+    <div *ngIf="patient.hasAppointment">
+      Datum: {{appointment.date | translateDate}}
+      <br />
+      Vrijeme: {{appointment.time.appointmentTime}}h
+      <br />
+      {{doctor.facility.name}}, ambulanta br.  {{doctor.ambulance}}
+      <br />
+      <br />
+      <button mat-stroked-button color="primary" (click)="openDialog()">Otkaži pregled</button>
+      <button mat-button color="primary" style="padding-left:23px; color: rebeccapurple" *ngIf="isAuthenticated" [routerLink]="['/schedule']">
+      Nazad na Naslovnu</button>
+      <button mat-button color="primary" style="padding-left:23px; color: rebeccapurple" *ngIf="!isAuthenticated" [routerLink]="['/']">
+      Nazad na Naslovnu</button>
+    </div>
+  </div>
+
+</form>

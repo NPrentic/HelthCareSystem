@@ -1,0 +1,38 @@
+
+<mat-card class="box-shadow" style="width: 480px">
+  <mat-card-header>
+    <mat-card-title>Prijava</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="example-form" #f="ngForm" (ngSubmit)="login(f)" [hidden]="!hideSpinner">
+
+      <mat-form-field class="example-full-width">
+        <input matInput
+               placeholder="Korisnički Id"
+               [(ngModel)]="credentials.userId"
+               name="userId"
+               required
+               pattern="^[0-9]*$">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput
+               placeholder="Lozinka"
+               [(ngModel)]="credentials.password"
+               type="password"
+               name="password"
+               required>
+      </mat-form-field>
+
+      <mat-error *ngIf="invalidLogin">
+       Neregularan zahtjev. Pokušajte ponovo.
+      </mat-error>
+      <br />
+      <button mat-stroked-button [disabled]="!f.valid" color="primary">Prijavi se</button>
+
+    </form>
+
+    <mat-spinner [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+  </mat-card-content>
+</mat-card>

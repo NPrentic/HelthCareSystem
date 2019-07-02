@@ -1,0 +1,64 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<h4>Upućivanje pacijenta kod ljekara specijaliste na pregled</h4>
+
+<h5>Pacient: {{data.patientName}}</h5>
+
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+  <mat-horizontal-stepper #stepper *ngIf="hideSpinner" >
+    <mat-step [stepControl]="firstFormGroup">
+
+      <ng-template matStepLabel>Izaberite ljekara</ng-template>
+
+      <mat-form-field>
+        <mat-label>
+          Tip specijaliste
+        </mat-label>
+        <mat-select required name="Doctor" [(ngModel)]="titleName" (selectionChange)="generateDoctorsList()">
+          <mat-option selected disabled>Izaberite ovdje</mat-option>
+          <mat-option *ngFor="let title of titles" value="{{title.name}}">
+            {{title.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <mat-label>
+          Ljekar spacijalista
+        </mat-label>
+        <mat-select required name="Doctor" [disabled]="!titleName" [(ngModel)]="doctorId">
+          <mat-option selected disabled>Izaberite ovdje</mat-option>
+          <mat-option *ngFor="let doc of doctors" value="{{doc.id}}">
+            {{doc.name}},  {{ doc.facility.name}}
+          </mat-option>
+        </mat-select>
+        <br />
+      </mat-form-field>
+      <br />
+      <div>
+        <button mat-button (click)="onNoClick()" color="primary">Otkaži</button>
+        <button mat-stroked-button color="primary" matStepperNext>Dalje</button>
+      </div>
+
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+
+      <ng-template matStepLabel>Termin pregleda</ng-template>
+      <div *ngIf="!doctorId || !data.patientId" style="color:red">
+        Najprije morate završiti prvi korak upućivanja.
+        <br />
+        <br />
+        <button mat-stroked-button color="primary" matStepperPrevious >Nazad</button>
+      </div>
+      <div *ngIf="doctorId">
+        <date-time [patient-id]="data.patientId" [doctor-id]="doctorId"></date-time>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Potvrda</ng-template> 
+    </mat-step>
+  </mat-horizontal-stepper>
+  <button  style="float: right"  mat-button  color="primary" [mat-dialog-close]="true">Nazad na pregled</button>
+  <br />
+

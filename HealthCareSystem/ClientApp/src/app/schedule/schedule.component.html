@@ -1,0 +1,158 @@
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+  <h4>Raspored</h4>
+  <br />
+  <button mat-stroked-button color="primary" [routerLink]="['/updating/shifts']" *ngIf="!isDoctor && !isTehnician">Ažuriranje rasporeda</button>
+  <br />
+  <mat-tab-group mat-align-tabs="end" *ngIf="!isDoctor && !isTehnician">
+    <mat-tab label="Ljekari">
+      <br />
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let doc of doctors">
+          <mat-expansion-panel-header (click)="onDoctorClick(doc.id)">
+            <mat-panel-title>
+              {{doc.name }}
+              <mat-panel-description>
+                , {{ doc.title.name.toLowerCase()}}
+              </mat-panel-description>
+            </mat-panel-title>
+
+          </mat-expansion-panel-header>
+          <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+            <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+              <tr>
+                <td>Datum</td>
+                <td>Smjena</td>
+              </tr>
+            </thead>
+            <tr><td colspan="5" *ngIf="doctorshifts==undefind || doctorShifts.length==0">Za dataog ljekara raspored još uvijek nije ažuriran.  </td></tr>
+            <tbody *ngFor="let sh of doctorShifts">
+              <tr>
+                <td>{{sh.date | translateDate}}</td>
+                <td *ngIf="sh.shift === 'first'">07:00 - 14:00h</td>
+                <td *ngIf="sh.shift === 'second'">14:00 - 21:00h</td>
+                <td *ngIf="sh.shift === 'midShift'">11:00 - 18:00h</td>
+              </tr>
+            </tbody>
+          </table>
+          <mat-paginator *ngIf="doctorShiftsNumber > doctorShiftsQuery.pageSize"
+                         [length]="doctorShiftsNumber"
+                         [pageSize]="doctorShiftsQuery.pageSize"
+                         [pageSizeOptions]="[6, 12, 24]"
+                         (page)="onDoctorShiftPageChange($event)">
+          </mat-paginator>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-paginator [length]="doctorsNumber"
+                     [pageSize]="doctorQuery.pageSize"
+                     [pageSizeOptions]="[6, 12, 24]"
+                     (page)="onDoctorPageChange($event)">
+      </mat-paginator>
+
+    </mat-tab>
+    <mat-tab label="Medicinske sestre i tehničari">
+
+      <br />
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let teh of tehnicians">
+          <mat-expansion-panel-header (click)="onTehnicianClick(teh.id)">
+            <mat-panel-title>
+              {{teh.name }}
+              <mat-panel-description>
+                ,<ng-container *ngIf="teh.gender.toLowerCase()=='male'"> medicinski tehničar</ng-container>
+                <ng-container *ngIf="teh.gender.toLowerCase()=='female'"> medicinska sestra</ng-container>
+              </mat-panel-description>
+            </mat-panel-title>
+
+          </mat-expansion-panel-header>
+          <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+            <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+              <tr>
+                <td>Datum</td>
+                <td>Smjena</td>
+              </tr>
+            </thead>
+            <tr><td colspan="5" *ngIf="tehnicianShifts==undefind || tehnicianShifts.length==0">Za dataog zaposlenog raspored još uvijek nije ažuriran.  </td></tr>
+            <tbody *ngFor="let sh of tehnicianShifts">
+              <tr>
+                <td>{{sh.date | translateDate}}</td>
+                <td *ngIf="sh.shift === 'first'">07:00 - 14:00h</td>
+                <td *ngIf="sh.shift === 'second'">14:00 - 21:00h</td>
+                <td *ngIf="sh.shift === 'midShift'">11:00 - 18:00h</td>
+              </tr>
+            </tbody>
+          </table>
+          <mat-paginator *ngIf="tehnicianShiftsNumber >tehnicianShiftsQuery.pageSize"
+                         [length]="tehnicianShiftsNumber"
+                         [pageSize]="tehnicianShiftsQuery.pageSize"
+                         [pageSizeOptions]="[6, 12, 24]"
+                         (page)="onTehnicianShiftPageChange($event)">
+          </mat-paginator>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-paginator [length]="tehniciansNumber"
+                     [pageSize]="tehnicianQuery.pageSize"
+                     [pageSizeOptions]="[6, 12, 24]"
+                     (page)="onTehnicianPageChange($event)">
+      </mat-paginator>
+
+    </mat-tab>
+  </mat-tab-group>
+  <form *ngIf="isDoctor && hideSpinner">
+
+    <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+      <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+        <tr>
+          <td>Datum</td>
+          <td>Smjena</td>
+        </tr>
+      </thead>
+      <tr><td colspan="5" *ngIf="doctorShifts==undefind || doctorShifts.length==0">Vaš raspored još uvijek nije ažuriran.  </td></tr>
+      <tbody *ngFor="let sh of doctorShifts">
+        <tr>
+          <td>{{sh.date | translateDate}}</td>
+          <td *ngIf="sh.shift === 'first'">07:00 - 14:00h</td>
+          <td *ngIf="sh.shift === 'second'">14:00 - 21:00h</td>
+          <td *ngIf="sh.shift === 'midShift'">11:00 - 18:00h</td>
+        </tr>
+      </tbody>
+    </table>
+    <mat-paginator *ngIf="doctorShiftsNumber > doctorShiftsQuery.pageSize && hideSpinner"
+                   [length]="doctorShiftsNumber"
+                   [pageSize]="doctorShiftsQuery.pageSize"
+                   [pageSizeOptions]="[6, 12, 24]"
+                   (page)="onDoctorShiftPageChange($event)">
+    </mat-paginator>
+
+  </form>
+  <form *ngIf="isTehnician && hideSpinner">
+
+    <table class="table" style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px ">
+      <thead style=" border-bottom:solid; border-bottom-color: rebeccapurple; border-bottom-width: 2px " class="well">
+        <tr>
+          <td>Datum</td>
+          <td>Smjena</td>
+        </tr>
+      </thead>
+      <tr><td colspan="5" *ngIf="tehnicianShifts==undefind || tehnicianShifts.length==0">Vaš raspored još uvijek nije ažuriran.  </td></tr>
+      <tbody *ngFor="let sh of tehnicianShifts">
+        <tr>
+          <td>{{sh.date | translateDate}}</td>
+          <td *ngIf="sh.shift === 'first'">07:00 - 14:00h</td>
+          <td *ngIf="sh.shift === 'second'">14:00 - 21:00h</td>
+          <td *ngIf="sh.shift === 'midShift'">11:00 - 18:00h</td>
+        </tr>
+      </tbody>
+    </table>
+    <mat-paginator *ngIf="tehnicianShiftsNumber > tehnicianShiftsQuery.pageSize && hideSpinner"
+                   [length]="tehnicianShiftsNumber"
+                   [pageSize]="tehnicianShiftsQuery.pageSize"
+                   [pageSizeOptions]="[6, 12, 24]"
+                   (page)="onTehnicianShiftPageChange($event)">
+    </mat-paginator>
+
+  </form>

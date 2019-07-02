@@ -1,0 +1,35 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<h4>Izdavanje ljekarskog uvjerenja</h4>
+
+<p>Pacient: {{data.patientName}}</p>
+
+<mat-spinner class="loading-indicator" [diameter]="82" [hidden]="hideSpinner"></mat-spinner>
+
+<form #f="ngForm" *ngIf="hideSpinner">
+
+  <div class="md-form">
+    <label for="form7">Unesite zdravstveno stanje zbog kojeg se izdaje uvjerenje</label>
+    <textarea id="form7" class="md-textarea form-control" rows="2" required [(ngModel)] ="text" name="text"></textarea>
+  </div>
+  <br /> <mat-form-field>
+    <input matInput
+           [ngModel] ="dates"
+           placeholder="Datumi za koje se izdaje"
+           [satDatepicker]="picker"
+           name="Date"
+           required>
+    <sat-datepicker touchUi #picker [rangeMode]="true"></sat-datepicker>
+    <sat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+    </sat-datepicker-toggle>
+  </mat-form-field>
+  <br />
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" color="primary">Otkaži</button>
+    <button mat-button cdkFocusInitial color="primary" [mat-dialog-close]="true" [disabled]="!f.valid">Izdaj uvjerenje</button>
+  </div>
+
+  <br />
+
+</form>

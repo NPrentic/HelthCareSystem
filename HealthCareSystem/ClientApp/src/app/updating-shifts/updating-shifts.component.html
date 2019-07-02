@@ -1,0 +1,76 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<form #f="ngForm">
+  <h4> Ažuriranje smjena</h4>
+  <br />
+
+  <mat-tab-group mat-align-tabs="end" (selectedTabChange)="onTabChange()">
+    <mat-tab label="Ljekari">
+      <mat-form-field>
+        <br />
+        <mat-label>
+          Ljekar
+        </mat-label>
+        <mat-select [(ngModel)]="shiftDetails.employeeId" (selectionChange)="disableDates()" required name="Doctor">
+          <mat-option selected disabled>Izaberite ovdje</mat-option>
+          <mat-option *ngFor="let doc of getDoctorsResult.doctors" value="{{doc.id}}">
+            {{doc.name}}, {{doc.title.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+    </mat-tab>
+    <mat-tab label="Medicinske sestre i tehničari">
+      <mat-form-field>
+        <br />
+        <mat-label>
+          Zaposleni
+        </mat-label>
+        <mat-select [(ngModel)]="shiftDetails.employeeId" required name="Tehnician" (selectionChange)="disableDates()">
+          <mat-option selected disabled>Izaberite ovdje</mat-option>
+          <mat-option *ngFor="let tech of tehnicians" value="{{tech.id}}">
+            {{tech.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+    </mat-tab>
+  </mat-tab-group>
+  <div>
+    <mat-form-field>
+      <input matInput
+             [matDatepickerFilter]="dateClass"
+             [min]="minDate"
+             placeholder="Izaberite datume"
+             [satDatepicker]="picker"
+             required
+             [(ngModel)]="shiftDetails.dateRange"
+             name="Date"
+             [disabled]="!shiftDetails.employeeId">
+      <sat-datepicker touchUi #picker [rangeMode]="true"></sat-datepicker>
+      <sat-datepicker-toggle matSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </sat-datepicker-toggle>
+    </mat-form-field>
+  </div>
+  <!--<button mat-raised-button [disabled]="!shiftDetails.dateRange">Potvrdi</button>-->
+  <br /><br />
+  <h4 style="font-weight: bold;   ">Smjena</h4>
+  <br />
+  <mat-radio-group aria-label="Smjena"
+                   required
+                   name="shift"
+                   [(ngModel)]="shiftDetails.shift"
+                   [disabled]="!shiftDetails.dateRange">
+    <mat-radio-button [value]="'first'">Prva (07:00 - 14:00h)</mat-radio-button><br />
+    <mat-radio-button [value]="'second'">Druga (14:00 - 21:00h)</mat-radio-button><br />
+    <mat-radio-button [value]="'midShift'">Međusmjena (11:00 - 18:00h)</mat-radio-button>
+  </mat-radio-group>
+  <br />
+  <br />
+  <button mat-stroked-button color="primary" [disabled]="!f.valid" (click)="onSubmit()">Sačuvaj</button>
+  <button mat-button color="primary"  [routerLink]="['/schedule']">Nazad na Raspored</button>
+</form>
+
+
+
